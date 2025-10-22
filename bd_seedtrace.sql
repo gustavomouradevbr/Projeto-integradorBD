@@ -345,4 +345,93 @@ INSERT INTO FORNECEDOR (nome, cnpj, telefone, endereco, email) VALUES
 SELECT 'Banco de dados SeedTrace criado com sucesso!' as Status;
 
 -- Mostrar todas as tabelas criadas
-SHOW TABLES;
+SHOW TABLES; 
+
+-- DICIONÁRIO DE DADOS
+
+-- TABELA: FUNCIONARIO
+-- id_funcionario (INT, PK, AI): Identificador do funcionário.
+-- cpf (VARCHAR(11)): CPF do funcionário (11 dígitos). UNIQUE.
+-- nome (VARCHAR(100)): Nome completo.
+-- email (VARCHAR(100)): E-mail institucional. UNIQUE.
+-- telefone (VARCHAR(15)): Telefone de contato.
+-- senha (VARCHAR(255)): Senha armazenada (hash).
+-- cargo (VARCHAR(50)): Cargo ou função no sistema.
+-- created_at (TIMESTAMP): Data de criação do registro.
+-- is_active (TINYINT(1)): Indicador de atividade (1 = ativo, 0 = inativo).
+
+-- TABELA: AGRICULTOR
+-- id_agricultor (INT, PK, AI): Identificador do agricultor.
+-- cpf (VARCHAR(11)): CPF do agricultor (11 dígitos). UNIQUE.
+-- nome (VARCHAR(100)): Nome completo.
+-- data_nascimento (DATE): Data de nascimento.
+-- telefone (VARCHAR(15)): Telefone de contato.
+-- municipio (VARCHAR(50)): Município de atuação.
+-- endereco (VARCHAR(200)): Endereço completo.
+-- created_at (TIMESTAMP): Registro criado em.
+-- is_active (TINYINT(1)): Indicador de atividade.
+
+-- TABELA: FORNECEDOR
+-- id_fornecedor (INT, PK, AI): Identificador do fornecedor.
+-- nome (VARCHAR(100)): Nome do fornecedor.
+-- cnpj (VARCHAR(14)): CNPJ (14 dígitos). UNIQUE.
+-- telefone, endereco, email, created_at.
+
+-- TABELA: LOTE_SEMENTE
+-- id_lote (INT, PK, AI): Identificador do lote.
+-- id_fornecedor (INT, FK): Fornecedor responsável pelo lote.
+-- tipo_semente (VARCHAR(50)): Tipo (e.g., Milho, Feijão).
+-- variedade (VARCHAR(50)): Variedade específica.
+-- quantidade (DECIMAL(10,2)): Quantidade inicial no lote.
+-- data_compra (DATE): Data da compra.
+-- numero_nota (VARCHAR(50)): Número da nota fiscal.
+-- validade (DATE): Data de validade do lote.
+-- created_at, is_active.
+
+-- TABELA: ARMAZEM
+-- id_armazem (INT, PK, AI): Identificador do armazém.
+-- nome (VARCHAR(50)), localizacao (VARCHAR(100)), capacidade (DECIMAL), responsavel.
+-- created_at, is_active.
+
+-- TABELA: ESTOQUE
+-- id_estoque (INT, PK, AI).
+-- id_lote (INT, FK) -> LOTE_SEMENTE.
+-- id_armazem (INT, FK) -> ARMAZEM.
+-- quantidade (DECIMAL(10,2)): Quantidade atual disponível.
+-- created_at, updated_at.
+
+-- TABELA: ENTREGA
+-- id_entrega (INT, PK, AI).
+-- id_agricultor (INT, FK) -> AGRICULTOR.
+-- id_funcionario (INT, FK) -> FUNCIONARIO.
+-- id_lote (INT, FK) -> LOTE_SEMENTE.
+-- quantidade (DECIMAL): Quantidade a ser entregue.
+-- data_planejada (DATE), data_entrega (DATE).
+-- status (ENUM): AGUARDANDO, A_CAMINHO, ENTREGUE, CANCELADA.
+-- assinatura (TEXT): assinatura ou comprovante.
+-- created_at (TIMESTAMP).
+
+-- TABELA: RASTREIO_ENTREGA
+-- id_rastreio (INT, PK, AI).
+-- id_entrega (INT, FK) -> ENTREGA.
+-- localizacao (VARCHAR), data_hora (TIMESTAMP), status (VARCHAR), observacao (VARCHAR).
+
+-- TABELA: MOVIMENTACAO
+-- id_movimentacao (INT, PK, AI).
+-- id_estoque (INT, FK) -> ESTOQUE.
+-- tipo (ENUM): ENTRADA, SAIDA, AJUSTE.
+-- quantidade (DECIMAL), data_movimento (TIMESTAMP), motivo (VARCHAR).
+
+-- TABELA: LOG_ACESSO
+-- id_log (INT, PK, AI).
+-- id_usuario (INT): id do usuário (pode ser funcionario/agricultor conforme tipo_usuario).
+-- tipo_usuario (ENUM): FUNCIONARIO, AGRICULTOR.
+-- data_acesso (TIMESTAMP), ip (VARCHAR), acao (VARCHAR).
+
+-- TABELA: RELATORIO
+-- id_relatorio (INT, PK, AI).
+-- tipo (VARCHAR): tipo de relatório.
+-- data_inicio, data_fim.
+-- parametros (JSON): parâmetros usados para gerar o relatório.
+-- arquivo (VARCHAR): caminho/nome do arquivo gerado.
+-- id_funcionario (FK) -> FUNCIONARIO.
